@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>X-treme Snipers Clan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Verdana, Arial, sans-serif;
+    background: #222;
+    color: #ddd;
+    margin: 0;
+    padding: 0;
+    transition: background 0.4s, color 0.4s;
+  }
+  body.light-mode {
+    background: #e6d8c3;
+    color: #2b1d0e;
+  }
+  body.camo-mode {
+    background: #2d3a2d;
+    color: #dfe6df;
+  }
+  body.pink-mode {
+    background: #ffc0cb;
+    color: #4a0e4e;
+  }
+  header {
+    background: url('banner-placeholder.jpg') no-repeat center/cover;
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    color: #fff;
+    font-size: 2rem;
+    text-shadow: 2px 2px #000;
+    border-bottom: 3px solid #444;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+    background: #333;
+    border-bottom: 2px solid #555;
+    flex-wrap: wrap;
+    transition: background 0.3s;
+  }
+  nav a, nav button {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    border-right: 1px solid #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  nav a:last-child, nav button:last-child, .theme-dropdown { border-right: none; }
+  nav a:hover, nav button:hover { background: #444; }
+
+  .theme-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .theme-menu {
+    display: none;
+    position: absolute;
+    background: #333;
+    min-width: 160px;
+    z-index: 1000;
+    top: 100%;
+    right: 0;
+    border: 2px solid #555;
+  }
+  .theme-menu.show {
+    display: block;
+  }
+  .theme-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    border: none;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    border-bottom: 1px solid #555;
+  }
+  .theme-menu button:last-child {
+    border-bottom: none;
+  }
+  .theme-menu button:hover {
+    background: #444;
+  }
+
+  body.light-mode nav {
+    background: #a37c40;
+    border-bottom: 2px solid #5c4020;
+  }
+  body.light-mode nav a, body.light-mode nav button {
+    color: #2b1d0e;
+    border-right: 1px solid #5c4020;
+  }
+  body.light-mode nav a:hover, body.light-mode nav button:hover {
+    background: #d9b77b;
+  }
+  body.light-mode .theme-menu {
+    background: #a37c40;
+    border-color: #5c4020;
+  }
+  body.light-mode .theme-menu button {
+    background: #a37c40;
+    color: #2b1d0e;
+    border-bottom: 1px solid #5c4020;
+  }
+  body.light-mode .theme-menu button:hover {
+    background: #d9b77b;
+  }
+
+  body.camo-mode nav {
+    background: #3f523f;
+    border-bottom: 2px solid #1e2b1e;
+  }
+  body.camo-mode nav a, body.camo-mode nav button {
+    color: #e2f0e2;
+    border-right: 1px solid #1e2b1e;
+  }
+  body.camo-mode nav a:hover, body.camo-mode nav button:hover {
+    background: #4d664d;
+  }
+  body.camo-mode .theme-menu {
+    background: #3f523f;
+    border-color: #1e2b1e;
+  }
+  body.camo-mode .theme-menu button {
+    background: #3f523f;
+    color: #e2f0e2;
+    border-bottom: 1px solid #1e2b1e;
+  }
+  body.camo-mode .theme-menu button:hover {
+    background: #4d664d;
+  }
+
+  body.pink-mode .theme-menu {
+    background: #ff69b4;
+    border-color: #ff1493;
+  }
+  body.pink-mode .theme-menu button {
+    background: #ff69b4;
+    color: #4a0e4e;
+    border-bottom: 1px solid #ff1493;
+  }
+  body.pink-mode .theme-menu button:hover {
+    background: #ffb6c1;
+  }
+
+  body.pink-mode nav {
+    background: #ff69b4;
+    border-bottom: 2px solid #ff1493;
+  }
+  body.pink-mode nav a, body.pink-mode nav button {
+    color: #4a0e4e;
+    border-right: 1px solid #ff1493;
+  }
+  body.pink-mode nav a:hover, body.pink-mode nav button:hover {
+    background: #ffb6c1;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 10px;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 10px;
+    transition: opacity 0.3s ease;
+  }
+  .layout.hidden {
+    display: none !important;
+  }
+  
+  .box {
+    background: #111;
+    border: 2px solid #555;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  body.light-mode .box {
+    background: #fff8dc;
+    border-color: #b89f72;
+    color: #2b1d0e;
+  }
+  body.camo-mode .box {
+    background: #364536;
+    border-color: #5c7a5c;
+    color: #dfe6df;
+  }
+  body.pink-mode .box {
+    background: #ffb6c1;
+    border-color: #ff69b4;
+    color: #4a0e4e;
+  }
+  .content {
+    grid-column: span 3;
+    background: #111;
+    border: 2px solid #555;
+    padding: 15px;
+    max-width: 1100px;
+    margin: 0 auto 20px auto;
+  }
+  .content > div { display: none; }
+  .content > .active { display: block; }
+  body.light-mode .content {
+    background: #fff8dc;
+    border-color: #b89f72;
+    color: #2b1d0e;
+  }
+  body.camo-mode .content {
+    background: #2e3b2e;
+    border-color: #5c7a5c;
+    color: #dfe6df;
+  }
+  body.pink-mode .content {
+    background: #ffb6c1;
+    border-color: #ff69b4;
+    color: #4a0e4e;
+  }
+
+  /* Member cards */
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+  }
+  .member {
+    background: #222;
+    border: 2px solid #555;
+    padding: 10px;
+    text-align: center;
+  }
+  .member img {
+    max-width: 100%;
+    border: 2px solid #444;
+    margin-bottom: 8px;
+  }
+  body.light-mode .member {
+    background: #fff2d6;
+    border-color: #a37c40;
+  }
+  body.camo-mode .member {
+    background: #3b4a3b;
+    border-color: #5c7a5c;
+  }
+  body.pink-mode .member {
+    background: #ffc0cb;
+    border-color: #ff69b4;
+  }
+
+  .games-section {
+    background: #181818;
+    border: 2px solid #444;
+    padding: 15px;
+    margin: 15px 0;
+  }
+  body.light-mode .games-section {
+    background: #f5f0e6;
+    border-color: #a37c40;
+  }
+  body.camo-mode .games-section {
+    background: #2a362a;
+    border-color: #4a5e4a;
+  }
+  body.pink-mode .games-section {
+    background: #ffb6c1;
+    border-color: #ff69b4;
+  }
+  
+  .rip-game {
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  footer {
+    text-align: center;
+    color: #aaa;
+    padding: 15px;
+    border-top: 2px solid #555;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  body.light-mode footer {
+    color: #5c4020;
+    border-color: #a37c40;
+  }
+  body.camo-mode footer {
+    color: #cfd9cf;
+    border-color: #5c7a5c;
+  }
+  body.pink-mode footer {
+    color: #4a0e4e;
+    border-color: #ff69b4;
+  }
+
+  /* Responsive stacking */
+  @media(max-width: 768px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .content {
+      grid-column: span 1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  The X-treme Snipers Clan
+</header>
+
+<nav>
+  <a href="#" data-target="home">Home</a>
+  <a href="#" data-target="about">About</a>
+  <a href="#" data-target="news">News</a>
+  <a href="#" data-target="members">Members</a>
+  <a href="#" data-target="games">Games List</a>
+  <div class="theme-dropdown">
+    <button id="themeDropdownBtn">🎨 Themes ▼</button>
+    <div class="theme-menu" id="themeMenu">
+      <button data-theme="dark">🌙 Night Mode</button>
+      <button data-theme="light">🌵 Desert Mode</button>
+      <button data-theme="camo">🎖️ Camo Mode</button>
+<!--     <button data-theme="pink">🦄 Pink Unicorns</button> -->
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- Left Box -->
+  <div class="box">
+    <h3>Any Suggestions?</h3>
+    <p>Drop us a comment at:<br><strong>XtremeSnipers@gmail.com</strong></p>
+  </div>
+
+  <!-- Middle Box (teaser for news) -->
+  <div class="box">
+    <h3>Update Box</h3>
+    <p><em>[08/21/2025]</em><br>
+    We're Back Baby! Time to pwn some n00bs!</p>
+    <p><a href="#" data-target="news">Read More →</a></p>
+  </div>
+
+  <!-- Right Box -->
+  <div class="box">
+    <h3>Random Affiliates</h3>
+    <img src="affiliate-placeholder.jpg" alt="Affiliate #1" style="width:100%;">
+    <p><a href="https://www.youtube.com/watch?v=E4WlUXrJgy4">Want Yours Here?</a></p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+  <div id="home" class="active">
+    <h2>Welcome</h2>
+    <p>Welcome to the reborn X-treme Snipers Clan website! This is a faithful recreation of the 2005 classic, but now mobile-friendly and ready for us to get some more headshots.</p>
+    <p>If you'd like to join our ragtag little group of gamers, or do a shift at our Supermarket, reach out!</p>
+  </div>
+
+  <div id="about">
+    <h2>About (=XS=)</h2>
+    <p>Why X-treme Snipers? Well… frankly we just think the name is cool & since we all had Battlefield 1942 and other alike games my friend thought we should make a clan.</p>
+    <p>Back in the day, we were on BF2 sniping while caffienated to the brim by BAWLS Gurana or rambling on in BTB on Halo 2 sporting Pink Armor while doing our best Schwarzenegger impressions.</p>
+    <p>Founded in the golden age of PC and console gaming we're still here bay-bee!</p>
+  </div>
+
+  <div id="news">
+    <h2>Clan Updates</h2>
+    <article>
+      <h3>[08/21/2025] We're Back Baby!</h3>
+      <p>After an approximately 15 year hiatus the website is being rebuilt. Time to dust off those mad skillz and show the younglings how it's done! The legend returns!</p>
+    </article>
+    <article>
+      <h3>[02/25/2005] Website Update</h3>
+      <p>Website new look being worked on. Stay tuned for new member features! Our webmaster finally figured out how to make animated GIFs work properly. EPIC!</p>
+    </article>
+    <article>
+      <h3>[02/10/2006] Match Results</h3>
+      <p>The X-treme Snipers went up against another clan [after many defats] in MLG Halo Matchmaking and pulled off an awesome victory!</p>
+    </article>
+    <article>
+      <h3>[01/15/2005] New Recruit Training</h3>
+      <p>Teaching the n00bs how to properly camp without being called a camper. It's an art form, people! Also, mandatory "BOOM HEADSHOT!" callouts are now enforced.</p>
+    </article>
+    <article>
+      <h3>[10/02/2004] The Generals Final Orders!</h3>
+      <p>On the date of Saturday, October 2nd, 2004... The X-treme Snipers website will become self sustained and functional! This means that (=XS=)Website Management will only update this site when it is needed. We want you our members to make it self sustained! You can do this by visiting regularly and posting messages in our forums! please do come back Put your name card in and visit often! By doing this you our members are running this site... Thanks,</p>
+    </article>
+  </div>
+
+  <div id="members">
+    <h2>Our Members</h2>
+    <div class="members-grid">
+      <div class="member">
+        <img src="member1-placeholder.jpg" alt="Member 1">
+        <h4>SniperWolf</h4>
+        <p>Loves long-range combat. Battlefield 1942 veteran. Can 360 no-scope before it was mainstream. Unironically uses "BOOM HEADSHOT!" in voice chat.</p>
+      </div>
+      <div class="member">
+        <img src="member2-placeholder.jpg" alt="Member 2">
+        <h4>QuickShot</h4>
+        <p>Fast reflexes, team strategist, always top fragging. Known for the legendary "knife only" matches and inventing the tactical teabag maneuver.</p>
+      </div>
+      <div class="member">
+        <img src="member3-placeholder.jpg" alt="Member 3">
+        <h4>ShadowFox</h4>
+        <p>Stealth player, specializes in flanking maneuvers. Master of the crouch-walk and can camp a corner for 20 minutes without getting bored.</p>
+      </div>
+    </div>
+
+    <h2>Former Members (aka "The Dropouts")</h2>
+    <div class="members-grid">
+      <div class="member">
+        <img src="exmember1-placeholder.jpg" alt="Ex Member 1">
+        <h4>NoScopeMcGee</h4>
+        <p>Claimed to be MLG-ready, but rage quit after 3 losses in a row. Last seen crying about "hackers" and "lag" on GameFAQs forums.</p>
+      </div>
+      <div class="member">
+        <img src="exmember2-placeholder.jpg" alt="Ex Member 2">
+        <h4>LagMaster</h4>
+        <p>Always had "internet problems" when it was time to scrim. Sure, buddy. Probably still blaming his dial-up connection in 2025.</p>
+      </div>
+      <div class="member">
+        <img src="exmember3-placeholder.jpg" alt="Ex Member 3">
+        <h4>FriendlyFire</h4>
+        <p>Shot more teammates than enemies. A true menace. Banned from most servers for "creative interpretations" of team play.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="games">
+    <h2>Games List</h2>
+    
+    <div class="games-section">
+      <h3>Current Rotation</h3>
+      <ul>
+        <li><strong>OpenTTD</strong> - IYKYK - Because sometimes you need a break from shooting people to build virtual train empires. FOSS and it runs on a potato.</li>
+        <li><strong>Supermarket Together </strong> - We like Trader Joe's SIM.</li>
+        <li><strong>Battlefield 2</strong> - The last REAL Battlefield game before EA ruined everything. 64-player battles, commander mode that actually mattered, and maps bigger than some countries. This is what peak performance looks like, kids. Everything after this was just corporate committee design.</li>
+        <li><strong>Battlefield 6 Open Beta</strong> - EA's latest attempt to recapture the magic they accidentally deleted. We're testing it so you don't have to waste your bandwidth. Spoiler alert: it's still not as good as BF1942, but hey, at least the graphics are pretty while the servers crash.</li>
+      </ul>
+    </div>
+
+    <div class="games-section">
+      <h3>Games That Have Left Us (RIP)</h3>
+      <ul>
+        <li class="rip-game"><strong>Battlefield 1942</strong> - The OG! Still the best WW2 shooter ever made. None of this modern warfare nonsense.</li>
+        <li class="rip-game"><strong>America's Army</strong> - Free-to-play before it was cool. The government's recruitment tool that actually slapped!</li>
+        <li class="rip-game"><strong>Rise of Nations</strong> - For when we need a break from shooting and want to conquer civilizations instead.</li>
+        <li class="rip-game"><strong>Battlefield 2142</strong> - Servers shut down. The future warfare we never got to finish.</li>
+        <li class="rip-game"><strong>Desert Combat Mod (BF1942)</strong> - The mod that was better than most full games. Ahead of its time.</li>
+        <li class="rip-game"><strong>Quake III Arena</strong> - Servers mostly dead. The arena shooter that demanded actual skill.</li>
+        <li class="rip-game"><strong>Unreal Tournament 2k4</strong> - M-M-M-MONSTER KILL! The announcer will forever echo in our hearts.</li>
+      </ul>
+    </div>
+
+     <div class="games-section">
+      <h3>Software, Abandoned (RIP)</h3>
+      <ul>
+        <li class="rip-game"><strong>GameSpy Arcade</strong> - The matchmaking service that connected us all. Gone but never forgotten. F in chat.</li>
+        <li class="rip-game"><strong>MSN Gaming Zone</strong> - Where legends were born and friendships were forged. Microsoft killed our childhood.</li>
+        <li class="rip-game"><strong>X-Fire</strong> - Medal.TV and Discord, well before Medal.TV and Discord...</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footerToggle">
+  2004+ (=XS=) - Pink Unicorns Forever!
+</footer>
+
+<script>
+  // Navigation switching
+  const navLinks = document.querySelectorAll('nav a, .box a');
+  const sections = document.querySelectorAll('.content > div');
+  const layoutArea = document.querySelector('.layout');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.getAttribute('data-target');
+      if (!target) return;
+      
+      // Hide layout area for all pages except home
+      if (target === 'home') {
+        layoutArea.classList.remove('hidden');
+      } else {
+        layoutArea.classList.add('hidden');
+      }
+      
+      sections.forEach(sec => {
+        sec.classList.toggle('active', sec.id === target);
+      });
+    });
+  });
+
+  // Apply theme helper
+  function applyTheme(theme) {
+    document.body.classList.remove('light-mode', 'camo-mode', 'pink-mode');
+    if (theme === 'light') {
+      document.body.classList.add('light-mode');
+    } else if (theme === 'camo') {
+      document.body.classList.add('camo-mode');
+    } else if (theme === 'pink') {
+      document.body.classList.add('pink-mode');
+    }
+    localStorage.setItem('theme', theme);
+  }
+
+  // Load saved preference or system default
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(prefersLight ? 'light' : 'dark');
+  }
+
+  // Theme toggle button
+  const themeDropdownBtn = document.getElementById('themeDropdownBtn');
+  const themeMenu = document.getElementById('themeMenu');
+  
+  themeDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    themeMenu.classList.toggle('show');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => {
+    themeMenu.classList.remove('show');
+  });
+
+  // Theme selection
+  document.querySelectorAll('.theme-menu button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const theme = btn.getAttribute('data-theme');
+      applyTheme(theme);
+      themeMenu.classList.remove('show');
+    });
+  });
+
+  // Footer click → pink mode
+  const footerToggle = document.getElementById('footerToggle');
+  footerToggle.addEventListener('click', () => {
+    applyTheme('pink');
+  });
+</script>
+
+</body>
+</html>
