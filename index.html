@@ -25,27 +25,56 @@
     background: #ffc0cb;
     color: #4a0e4e;
   }
-  header {
-    background: url('banner-placeholder.jpg') no-repeat center/cover;
-    height: 150px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    color: #fff;
-    font-size: 2rem;
-    text-shadow: 2px 2px #000;
-    border-bottom: 3px solid #444;
-  }
+
+  /* Navigation */
   nav {
-    display: flex;
-    justify-content: center;
     background: #333;
     border-bottom: 2px solid #555;
-    flex-wrap: wrap;
     transition: background 0.3s;
+    position: relative;
+    height: 52px;
   }
-  nav a, nav button {
-    padding: 10px 20px;
+
+  .hamburger {
+    display: none;
+    background: #333;
+    border: 2px solid #555;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 52px;
+    width: 100px;
+    z-index: 1001;
+    box-sizing: border-box;
+  }
+
+  .hamburger:hover {
+    background: #444;
+  }
+
+  .nav-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 52px;
+  }
+
+  .nav-menu li {
+    position: relative;
+  }
+
+  .nav-menu a, .nav-menu button {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 52px;
     text-decoration: none;
     color: #fff;
     font-weight: bold;
@@ -53,14 +82,26 @@
     background: none;
     border: none;
     cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    font-size: inherit;
+    box-sizing: border-box;
   }
-  nav a:last-child, nav button:last-child, .theme-dropdown { border-right: none; }
-  nav a:hover, nav button:hover { background: #444; }
 
+  .nav-menu > li:last-child > a,
+  .nav-menu > li:last-child > button {
+    border-right: none;
+  }
+
+  .nav-menu a:hover, .nav-menu button:hover {
+    background: #444;
+  }
+
+  /* Theme dropdown */
   .theme-dropdown {
     position: relative;
-    display: inline-block;
   }
+
   .theme-menu {
     display: none;
     position: absolute;
@@ -70,10 +111,15 @@
     top: 100%;
     right: 0;
     border: 2px solid #555;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
+
   .theme-menu.show {
     display: block;
   }
+
   .theme-menu button {
     display: block;
     width: 100%;
@@ -84,23 +130,100 @@
     color: #fff;
     cursor: pointer;
     border-bottom: 1px solid #555;
+    border-right: none !important;
   }
+
   .theme-menu button:last-child {
     border-bottom: none;
   }
+
   .theme-menu button:hover {
     background: #444;
   }
 
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    body {
+      padding-top: 52px;
+    }
+
+    .hamburger {
+      display: block;
+      width: 100%;
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 52px);
+      background: #333;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      transition: top 0.3s ease;
+      z-index: 999;
+      padding-top: 52px;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-menu.active {
+      top: 0;
+    }
+
+    .nav-menu li {
+      border-bottom: 1px solid #555;
+    }
+
+    .nav-menu a, .nav-menu button {
+      border-right: none;
+      padding: 20px;
+      height: auto;
+      text-align: left;
+      justify-content: flex-start;
+    }
+
+    .theme-menu {
+      position: static;
+      display: block;
+      background: #444;
+      border: none;
+      margin-left: 20px;
+    }
+
+    .theme-menu button {
+      background: #444;
+      padding-left: 40px;
+    }
+  }
+
+  /* Theme-specific navigation styles */
   body.light-mode nav {
     background: #a37c40;
     border-bottom: 2px solid #5c4020;
   }
-  body.light-mode nav a, body.light-mode nav button {
+  body.light-mode .nav-menu a, body.light-mode .nav-menu button, body.light-mode .hamburger {
     color: #2b1d0e;
     border-right: 1px solid #5c4020;
   }
-  body.light-mode nav a:hover, body.light-mode nav button:hover {
+  body.light-mode .hamburger {
+    background: #a37c40;
+    border-color: #5c4020;
+  }
+  body.light-mode .hamburger:hover {
+    background: #d9b77b;
+  }
+  body.light-mode .nav-menu a:hover, body.light-mode .nav-menu button:hover {
     background: #d9b77b;
   }
   body.light-mode .theme-menu {
@@ -116,15 +239,37 @@
     background: #d9b77b;
   }
 
+  @media (max-width: 768px) {
+    body.light-mode .nav-menu {
+      background: #a37c40;
+    }
+    body.light-mode .nav-menu li {
+      border-bottom: 1px solid #5c4020;
+    }
+    body.light-mode .theme-menu {
+      background: #8b6914;
+    }
+    body.light-mode .theme-menu button {
+      background: #8b6914;
+    }
+  }
+
   body.camo-mode nav {
     background: #3f523f;
     border-bottom: 2px solid #1e2b1e;
   }
-  body.camo-mode nav a, body.camo-mode nav button {
+  body.camo-mode .nav-menu a, body.camo-mode .nav-menu button, body.camo-mode .hamburger {
     color: #e2f0e2;
     border-right: 1px solid #1e2b1e;
   }
-  body.camo-mode nav a:hover, body.camo-mode nav button:hover {
+  body.camo-mode .hamburger {
+    background: #3f523f;
+    border-color: #1e2b1e;
+  }
+  body.camo-mode .hamburger:hover {
+    background: #4d664d;
+  }
+  body.camo-mode .nav-menu a:hover, body.camo-mode .nav-menu button:hover {
     background: #4d664d;
   }
   body.camo-mode .theme-menu {
@@ -140,6 +285,32 @@
     background: #4d664d;
   }
 
+  @media (max-width: 768px) {
+    body.camo-mode .nav-menu {
+      background: #3f523f;
+    }
+    body.camo-mode .nav-menu li {
+      border-bottom: 1px solid #1e2b1e;
+    }
+    body.camo-mode .theme-menu {
+      background: #2d3a2d;
+    }
+    body.camo-mode .theme-menu button {
+      background: #2d3a2d;
+    }
+  }
+
+  body.pink-mode nav {
+    background: #ff69b4;
+    border-bottom: 2px solid #ff1493;
+  }
+  body.pink-mode .nav-menu a, body.pink-mode .nav-menu button, body.pink-mode .hamburger {
+    color: #4a0e4e;
+    border-right: 1px solid #ff1493;
+  }
+  body.pink-mode .nav-menu a:hover, body.pink-mode .nav-menu button:hover {
+    background: #ffb6c1;
+  }
   body.pink-mode .theme-menu {
     background: #ff69b4;
     border-color: #ff1493;
@@ -153,16 +324,30 @@
     background: #ffb6c1;
   }
 
-  body.pink-mode nav {
+   body.pink-mode .hamburger {
     background: #ff69b4;
-    border-bottom: 2px solid #ff1493;
+    border-color: #ff1493;
   }
-  body.pink-mode nav a, body.pink-mode nav button {
-    color: #4a0e4e;
-    border-right: 1px solid #ff1493;
-  }
-  body.pink-mode nav a:hover, body.pink-mode nav button:hover {
+  body.pink-mode .hamburger:hover {
     background: #ffb6c1;
+  }
+  body.pink-mode .nav-menu a:hover, body.pink-mode .nav-menu button:hover {
+    background: #ffb6c1;
+  }
+
+  @media (max-width: 768px) {
+    body.pink-mode .nav-menu {
+      background: #ff69b4;
+    }
+    body.pink-mode .nav-menu li {
+      border-bottom: 1px solid #ff1493;
+    }
+    body.pink-mode .theme-menu {
+      background: #ff1493;
+    }
+    body.pink-mode .theme-menu button {
+      background: #ff1493;
+    }
   }
 
   .layout {
@@ -279,6 +464,183 @@
     font-style: italic;
   }
 
+  /* Screenshot gallery styles */
+  .screenshot-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .screenshot-item {
+    background: #222;
+    border: 2px solid #555;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .screenshot-item:hover {
+    transform: scale(1.02);
+  }
+  .screenshot-item img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border: 2px solid #444;
+    margin-bottom: 8px;
+  }
+  .screenshot-caption {
+    font-size: 0.9em;
+    color: #bbb;
+  }
+  body.light-mode .screenshot-item {
+    background: #fff2d6;
+    border-color: #a37c40;
+  }
+  body.light-mode .screenshot-caption {
+    color: #5c4020;
+  }
+  body.camo-mode .screenshot-item {
+    background: #3b4a3b;
+    border-color: #5c7a5c;
+  }
+  body.camo-mode .screenshot-caption {
+    color: #cfd9cf;
+  }
+  body.pink-mode .screenshot-item {
+    background: #ffc0cb;
+    border-color: #ff69b4;
+  }
+  body.pink-mode .screenshot-caption {
+    color: #4a0e4e;
+  }
+
+  /* Stats dashboard styles */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: #222;
+    border: 2px solid #555;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  .stat-card h4 {
+    color: #ffa500;
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    text-align: center;
+  }
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #444;
+  }
+  .stat-item:last-child {
+    border-bottom: none;
+  }
+  .stat-value {
+    font-weight: bold;
+    color: #4CAF50;
+  }
+  .leaderboard {
+    background: #181818;
+    border: 2px solid #444;
+    padding: 15px;
+    margin: 15px 0;
+    overflow-x: auto;
+  }
+  .leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+  }
+  .leaderboard th, .leaderboard td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+  }
+  .leaderboard th {
+    background: #333;
+    color: #ffa500;
+  }
+  .rank-1 { color: #FFD700; font-weight: bold; }
+  .rank-2 { color: #C0C0C0; font-weight: bold; }
+  .rank-3 { color: #CD7F32; font-weight: bold; }
+
+  /* Light mode stats */
+  body.light-mode .stat-card {
+    background: #fff2d6;
+    border-color: #a37c40;
+  }
+  body.light-mode .stat-card h4 {
+    color: #8b4513;
+  }
+  body.light-mode .stat-item {
+    border-bottom: 1px solid #a37c40;
+  }
+  body.light-mode .leaderboard {
+    background: #f5f0e6;
+    border-color: #a37c40;
+  }
+  body.light-mode .leaderboard th {
+    background: #a37c40;
+    color: #fff8dc;
+  }
+  body.light-mode .leaderboard th, body.light-mode .leaderboard td {
+    border-bottom: 1px solid #a37c40;
+  }
+
+  /* Camo mode stats */
+  body.camo-mode .stat-card {
+    background: #3b4a3b;
+    border-color: #5c7a5c;
+  }
+  body.camo-mode .stat-card h4 {
+    color: #90EE90;
+  }
+  body.camo-mode .stat-item {
+    border-bottom: 1px solid #5c7a5c;
+  }
+  body.camo-mode .leaderboard {
+    background: #2a362a;
+    border-color: #4a5e4a;
+  }
+  body.camo-mode .leaderboard th {
+    background: #3f523f;
+    color: #e2f0e2;
+  }
+  body.camo-mode .leaderboard th, body.camo-mode .leaderboard td {
+    border-bottom: 1px solid #5c7a5c;
+  }
+
+  /* Pink mode stats */
+  body.pink-mode .stat-card {
+    background: #ffc0cb;
+    border-color: #ff69b4;
+  }
+  body.pink-mode .stat-card h4 {
+    color: #8B008B;
+  }
+  body.pink-mode .stat-item {
+    border-bottom: 1px solid #ff69b4;
+  }
+  body.pink-mode .leaderboard {
+    background: #ffb6c1;
+    border-color: #ff69b4;
+  }
+  body.pink-mode .leaderboard th {
+    background: #ff69b4;
+    color: #4a0e4e;
+  }
+  body.pink-mode .leaderboard th, body.pink-mode .leaderboard td {
+    border-bottom: 1px solid #ff69b4;
+  }
+
   footer {
     text-align: center;
     color: #aaa;
@@ -308,30 +670,40 @@
     .content {
       grid-column: span 1;
     }
+    .screenshot-gallery {
+      grid-template-columns: 1fr;
+    }
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+    .members-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
 <body>
 
-<header>
-  The X-treme Snipers Clan
-</header>
-
 <nav>
-  <a href="#" data-target="home">Home</a>
-  <a href="#" data-target="about">About</a>
-  <a href="#" data-target="news">News</a>
-  <a href="#" data-target="members">Members</a>
-  <a href="#" data-target="games">Games List</a>
-  <div class="theme-dropdown">
-    <button id="themeDropdownBtn">🎨 Themes ▼</button>
-    <div class="theme-menu" id="themeMenu">
-      <button data-theme="dark">🌙 Night Mode</button>
-      <button data-theme="light">🌵 Desert Mode</button>
-      <button data-theme="camo">🎖️ Camo Mode</button>
-<!--     <button data-theme="pink">🦄 Pink Unicorns</button> -->
-    </div>
-  </div>
+  <button class="hamburger">☰ MAIN MENU</button>
+  <ul class="nav-menu">
+    <li><a href="#" data-target="home">Home</a></li>
+    <li><a href="#" data-target="about">About</a></li>
+    <li><a href="#" data-target="news">News</a></li>
+    <li><a href="#" data-target="members">Members</a></li>
+    <li><a href="#" data-target="screenshots">Screenshots</a></li>
+    <li><a href="#" data-target="stats">Clan Stats</a></li>
+    <li><a href="#" data-target="games">Games List</a></li>
+    <li class="theme-dropdown">
+      <button id="themeDropdownBtn">🎨 Themes ▼</button>
+      <ul class="theme-menu" id="themeMenu">
+        <li><button data-theme="dark">🌙 Night Mode</button></li>
+        <li><button data-theme="light">🌵 Desert Mode</button></li>
+        <li><button data-theme="camo">🎖️ Camo Mode</button></li>
+        <!-- <li><button data-theme="pink">🦄 Pink Unicorns</button></li> -->
+      </ul>
+    </li>
+  </ul>
 </nav>
 
 <div class="layout">
@@ -353,7 +725,7 @@
   <div class="box">
     <h3>Random Affiliates</h3>
     <img src="affiliate-placeholder.jpg" alt="Affiliate #1" style="width:100%;">
-    <p><a href="https://www.youtube.com/watch?v=E4WlUXrJgy4">Want Yours Here?</a></p>
+    <p><a href="www.youtube.com/watch?v=E4WlUXrJgy4">Want Yours Here?</a></p>
   </div>
 </div>
 
@@ -400,40 +772,260 @@
     <h2>Our Members</h2>
     <div class="members-grid">
       <div class="member">
-        <img src="member1-placeholder.jpg" alt="Member 1">
+        <img src="img/sniper.png" alt="Member 1">
         <h4>SniperWolf</h4>
         <p>Loves long-range combat. Battlefield 1942 veteran. Can 360 no-scope before it was mainstream. Unironically uses "BOOM HEADSHOT!" in voice chat.</p>
       </div>
       <div class="member">
-        <img src="member2-placeholder.jpg" alt="Member 2">
+        <img src="img/sniper.png" alt="Member 2">
         <h4>QuickShot</h4>
         <p>Fast reflexes, team strategist, always top fragging. Known for the legendary "knife only" matches and inventing the tactical teabag maneuver.</p>
       </div>
       <div class="member">
-        <img src="member3-placeholder.jpg" alt="Member 3">
+        <img src="img/sniper.png" alt="Member 3">
         <h4>ShadowFox</h4>
         <p>Stealth player, specializes in flanking maneuvers. Master of the crouch-walk and can camp a corner for 20 minutes without getting bored.</p>
       </div>
     </div>
 
-    <h2>Former Members (aka "The Dropouts")</h2>
+    <h2>MIA, those who have stopped logging in along the way.</h2>
     <div class="members-grid">
       <div class="member">
-        <img src="exmember1-placeholder.jpg" alt="Ex Member 1">
+        <img src="img/snipergone.png" alt="Ex Member 1">
         <h4>NoScopeMcGee</h4>
         <p>Claimed to be MLG-ready, but rage quit after 3 losses in a row. Last seen crying about "hackers" and "lag" on GameFAQs forums.</p>
       </div>
       <div class="member">
-        <img src="exmember2-placeholder.jpg" alt="Ex Member 2">
+        <img src="img/snipergone.png" alt="Ex Member 2">
         <h4>LagMaster</h4>
         <p>Always had "internet problems" when it was time to scrim. Sure, buddy. Probably still blaming his dial-up connection in 2025.</p>
       </div>
       <div class="member">
-        <img src="exmember3-placeholder.jpg" alt="Ex Member 3">
+        <img src="img/snipergone.png" alt="Ex Member 3">
         <h4>FriendlyFire</h4>
         <p>Shot more teammates than enemies. A true menace. Banned from most servers for "creative interpretations" of team play.</p>
       </div>
     </div>
+  </div>
+
+  <div id="screenshots">
+    <h2>Epic Screenshots & Memories</h2>
+    <p>Check out our legendary moments, epic fails, and victory celebrations from our gaming sessions!</p>
+    
+    <div class="screenshot-gallery">
+      <div class="screenshot-item">
+        <img src="america-army-training.jpg" alt="Americas Army Training">
+        <h4>Boot Camp Graduation</h4>
+        <p class="screenshot-caption">The only game where you had to sit through actual military training. Worth it for the realism!</p>
+      </div>
+      
+      <div class="screenshot-item">
+        <img src="openttd-empire.jpg" alt="OpenTTD Transport Empire">
+        <h4>Transport Tycoon Empire</h4>
+        <p class="screenshot-caption">stav044's massive railway network spanning 3 continents. Absolutely mental engineering!</p>
+      </div>
+      
+      <div class="screenshot-item">
+        <img src="clan-meet-2005.jpg" alt="Clan Meetup 2005">
+        <h4>IRL Clan Meetup 2005</h4>
+        <p class="screenshot-caption">The legendary pizza and LAN party meetup. Note the Tower of BAWLS energy drinks.</p>
+      </div>
+    </div>
+    <div class="screenshot-gallery"></div>
+      
+      <div class="screenshot-item">
+        <img src="quicksilvergunk-c4.jpg" alt="quicksilvergunk demolition">
+        <h4>quicksilvergunk's C4 Masterpiece</h4>
+        <p class="screenshot-caption">Entire enemy squad eliminated with perfectly timed explosives. The man's an artist with C4!</p>
+      </div>
+      
+      <div class="screenshot-item">
+        <img src="beepkray-headshot.jpg" alt="beepkray sniper shot">
+        <h4>beepkray's Impossible Shot</h4>
+        <p class="screenshot-caption">800m headshot through smoke on a moving target. The shot that made legends cry.</p>
+      </div>
+      
+      <div class="screenshot-item">
+        <img src="supermarket-chaos.jpg" alt="Supermarket Together">
+        <h4>Supermarket Simulator Madness</h4>
+        <p class="screenshot-caption">stav044 as manager = maximum efficiency. quicksilvergunk as cashier = pure chaos. Perfect balance!</p>
+      </div>
+      
+      <div class="screenshot-item">
+        <img src="desert-combat-choppers.jpg" alt="Desert Combat Helicopters">
+        <h4>Desert Combat Air Show</h4>
+        <p class="screenshot-caption">Back when helicopter physics were "realistic" aka completely broken. RIP to our pilot.</p>
+      </div>
+      </div>
+      <div class="screenshot-item">
+
+    <h3>Upload Your Screenshots!</h3>
+    <p>Got an epic moment to share? Send your screenshots to <strong>XtremeSnipers@gmail.com</strong> with the subject line "EPIC SCREENSHOT" and we'll add them to the gallery!</p>
+  </div>
+
+  <div id="stats">
+    <h2>Clan Statistics Dashboard</h2>
+    <p><em>Last Updated: August 21, 2025 | Data refreshed hourly via Steam API & community trackers</em></p>
+    <p>THIS IS FAKE DATA CURRENTLY ;)</p>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h4>🎯 Battlefield 2 Stats</h4>
+        <div class="stat-item">
+          <span>Total Kills:</span>
+          <span class="stat-value">55,823</span>
+        </div>
+        <div class="stat-item">
+          <span>Headshot %:</span>
+          <span class="stat-value">38.7%</span>
+        </div>
+        <div class="stat-item">
+          <span>K/D Ratio:</span>
+          <span class="stat-value">2.91</span>
+        </div>
+        <div class="stat-item">
+          <span>Hours Played:</span>
+          <span class="stat-value">1,847h</span>
+        </div>
+        <div class="stat-item">
+          <span>Favorite Map:</span>
+          <span class="stat-value">Strike at Karkand</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h4>🚂 OpenTTD Transport Empire</h4>
+        <div class="stat-item">
+          <span>Company Value:</span>
+          <span class="stat-value">£187.1M</span>
+        </div>
+        <div class="stat-item">
+          <span>Total Trains:</span>
+          <span class="stat-value">677</span>
+        </div>
+        <div class="stat-item">
+          <span>Track Length:</span>
+          <span class="stat-value">4,291 km</span>
+        </div>
+        <div class="stat-item">
+          <span>Cargo Delivered:</span>
+          <span class="stat-value">234,891 tons</span>
+        </div>
+        <div class="stat-item">
+          <span>Years Operating:</span>
+          <span class="stat-value">134 years</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h4>🛒 Supermarket Together</h4>
+        <div class="stat-item">
+          <span>Revenue This Week:</span>
+          <span class="stat-value">$85,066</span>
+        </div>
+        <div class="stat-item">
+          <span>Customer Satisfaction:</span>
+          <span class="stat-value">90%</span>
+        </div>
+        <div class="stat-item">
+          <span>Items Sold:</span>
+          <span class="stat-value">12,447</span>
+        </div>
+        <div class="stat-item">
+          <span>Store Level:</span>
+          <span class="stat-value">15</span>
+        </div>
+        <div class="stat-item">
+          <span>Employees:</span>
+          <span class="stat-value">23</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h4>🎮 Steam Collective Stats</h4>
+        <div class="stat-item">
+          <span>Combined Hours:</span>
+          <span class="stat-value">8,947h</span>
+        </div>
+        <div class="stat-item">
+          <span>Games Owned:</span>
+          <span class="stat-value">1,423</span>
+        </div>
+        <div class="stat-item">
+          <span>Achievements:</span>
+          <span class="stat-value">3,789</span>
+        </div>
+        <div class="stat-item">
+          <span>Perfect Games:</span>
+          <span class="stat-value">47</span>
+        </div>
+        <div class="stat-item">
+          <span>Avg Rating:</span>
+          <span class="stat-value">4.8/5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="leaderboard">
+      <h3>🏆 Current Clan Leaderboards</h3>
+      
+      <h4>Battlefield 2 - Kill/Death Ratio</h4>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Player</th><th>K/D</th><th>Total Kills</th><th>Headshots</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank-1">#1</td><td>beepkray</td><td>3.84</td><td>21,247</td><td>9,156</td></tr>
+          <tr><td class="rank-2">#2</td><td>quicksilvergunk</td><td>2.67</td><td>18,934</td><td>5,423</td></tr>
+          <tr><td class="rank-3">#3</td><td>stav044</td><td>2.23</td><td>15,642</td><td>4,891</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="leaderboard">
+      <h4>OpenTTD - Company Valuation</h4>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>CEO</th><th>Company Value</th><th>Trains</th><th>Profit/Year</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank-1">#1</td><td>stav044</td><td>£89.7M</td><td>312</td><td>£12.4M</td></tr>
+          <tr><td class="rank-2">#2</td><td>beepkray</td><td>£56.3M</td><td>198</td><td>£8.1M</td></tr>
+          <tr><td class="rank-3">#3</td><td>quicksilvergunk</td><td>£41.2M</td><td>167</td><td>£5.9M</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="leaderboard">
+      <h4>Supermarket Together - Weekly Revenue</h4>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Store Manager</th><th>Revenue</th><th>Satisfaction</th><th>Level</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank-1">#1</td><td>stav044</td><td>$34,821</td><td>94%</td><td>18</td></tr>
+          <tr><td class="rank-2">#2</td><td>quicksilvergunk</td><td>$28,456</td><td>87%</td><td>15</td></tr>
+          <tr><td class="rank-3">#3</td><td>beepkray</td><td>$21,789</td><td>89%</td><td>13</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>📊 Legacy Game Archives</h3>
+    <div class="games-section">
+      <h4>Halo 2 (Xbox Live Era)</h4>
+      <p><strong>Clan Record:</strong> 247 Wins, 89 Losses (73% Win Rate)<br>
+      <strong>Best BTB Streak:</strong> 23 consecutive wins<br>
+      <strong>Legendary Match:</strong> 4v4 on Lockout, 50-49 victory with quicksilvergunk getting the game-winning no-scope</p>
+    </div>
+
+    <div class="games-section">
+      <h4>Battlefield 1942 (GameSpy Era)</h4>
+      <p><strong>Server Favorites:</strong> Wake Island 24/7, El Alamein Tank Battles<br>
+      <strong>Clan Achievements:</strong> Held #1 Desert Combat server ranking for 6 months<br>
+      <strong>Epic Moment:</strong> beepkray's 47-kill streak in a Sherman tank on El Alamein</p>
+    </div>
+
+    <p><em>📈 Stats are automatically pulled from Steam API, BattleLog archives, and community stat trackers. Some legacy data reconstructed from screenshots and forum archives.</em></p>
   </div>
 
   <div id="games">
@@ -470,7 +1062,6 @@
         <li class="rip-game"><strong>X-Fire</strong> - Medal.TV and Discord, well before Medal.TV and Discord...</li>
       </ul>
     </div>
-    </div>
   </div>
 </div>
 
@@ -480,15 +1071,26 @@
 
 <script>
   // Navigation switching
-  const navLinks = document.querySelectorAll('nav a, .box a');
+  const navLinks = document.querySelectorAll('.nav-menu a, .box a');
   const sections = document.querySelectorAll('.content > div');
   const layoutArea = document.querySelector('.layout');
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.nav-menu');
   
+  // Mobile menu toggle
+  hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+  });
+
+  // Close mobile menu when clicking on a nav link
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
       const target = link.getAttribute('data-target');
       if (!target) return;
+      
+      // Close mobile menu
+      navMenu.classList.remove('active');
       
       // Hide layout area for all pages except home
       if (target === 'home') {
@@ -503,6 +1105,13 @@
     });
   });
 
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+      navMenu.classList.remove('active');
+    }
+  });
+
   // Apply theme helper
   function applyTheme(theme) {
     document.body.classList.remove('light-mode', 'camo-mode', 'pink-mode');
@@ -513,16 +1122,7 @@
     } else if (theme === 'pink') {
       document.body.classList.add('pink-mode');
     }
-    localStorage.setItem('theme', theme);
-  }
 
-  // Load saved preference or system default
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    applyTheme(savedTheme);
-  } else {
-    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    applyTheme(prefersLight ? 'light' : 'dark');
   }
 
   // Theme toggle button
@@ -535,8 +1135,10 @@
   });
 
   // Close dropdown when clicking outside
-  document.addEventListener('click', () => {
-    themeMenu.classList.remove('show');
+  document.addEventListener('click', (e) => {
+    if (!themeMenu.contains(e.target) && !themeDropdownBtn.contains(e.target)) {
+      themeMenu.classList.remove('show');
+    }
   });
 
   // Theme selection
@@ -546,6 +1148,8 @@
       const theme = btn.getAttribute('data-theme');
       applyTheme(theme);
       themeMenu.classList.remove('show');
+      // Close mobile menu if open
+      navMenu.classList.remove('active');
     });
   });
 
