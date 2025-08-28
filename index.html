@@ -57,6 +57,46 @@
   nav a:last-child, nav button:last-child, .theme-dropdown { border-right: none; }
   nav a:hover, nav button:hover { background: #444; }
 
+/* Hamburger button */
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  display: none; /* hidden by default */
+}
+
+/* Mobile nav hidden by default */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile view */
+@media(max-width: 768px) {
+  .hamburger {
+    display: block; /* show hamburger */
+  }
+
+  .nav-menu {
+    display: none;          /* hide menu */
+    flex-direction: column; /* vertical layout */
+    width: 100%;
+    background: #333;
+  }
+
+  .nav-menu.show {
+    display: flex;          /* show when toggled */
+  }
+
+  .nav-menu li {
+    border-bottom: 1px solid #555;
+  }
+}
   .theme-dropdown {
     position: relative;
     display: inline-block;
@@ -938,6 +978,23 @@
   footerToggle.addEventListener('click', () => {
     applyTheme('pink');
   });
+
+
+// Hamburger toggle
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+hamburger.addEventListener('click', () => {
+  navMenu.classList.toggle('show');
+});
+
+// Close menu when a link is clicked
+document.querySelectorAll('.nav-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    navMenu.classList.remove('show');
+  });
+});
+
 </script>
 
 
