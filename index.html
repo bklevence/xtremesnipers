@@ -25,56 +25,27 @@
     background: #ffc0cb;
     color: #4a0e4e;
   }
-
-  /* Navigation */
-  nav {
-    background: #333;
-    border-bottom: 2px solid #555;
-    transition: background 0.3s;
-    position: relative;
-    height: 52px;
-  }
-
-  .hamburger {
-    display: none;
-    background: #333;
-    border: 2px solid #555;
+  header {
+    background: url('banner-placeholder.jpg') no-repeat center/cover;
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
     color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 52px;
-    width: 100px;
-    z-index: 1001;
-    box-sizing: border-box;
+    font-size: 2rem;
+    text-shadow: 2px 2px #000;
+    border-bottom: 3px solid #444;
   }
-
-  .hamburger:hover {
-    background: #444;
-  }
-
-  .nav-menu {
+  nav {
     display: flex;
     justify-content: center;
+    background: #333;
+    border-bottom: 2px solid #555;
     flex-wrap: wrap;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    height: 52px;
+    transition: background 0.3s;
   }
-
-  .nav-menu li {
-    position: relative;
-  }
-
-  .nav-menu a, .nav-menu button {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    height: 52px;
+  nav a, nav button {
+    padding: 10px 20px;
     text-decoration: none;
     color: #fff;
     font-weight: bold;
@@ -82,26 +53,14 @@
     background: none;
     border: none;
     cursor: pointer;
-    white-space: nowrap;
-    font-family: inherit;
-    font-size: inherit;
-    box-sizing: border-box;
   }
+  nav a:last-child, nav button:last-child, .theme-dropdown { border-right: none; }
+  nav a:hover, nav button:hover { background: #444; }
 
-  .nav-menu > li:last-child > a,
-  .nav-menu > li:last-child > button {
-    border-right: none;
-  }
-
-  .nav-menu a:hover, .nav-menu button:hover {
-    background: #444;
-  }
-
-  /* Theme dropdown */
   .theme-dropdown {
     position: relative;
+    display: inline-block;
   }
-
   .theme-menu {
     display: none;
     position: absolute;
@@ -111,15 +70,10 @@
     top: 100%;
     right: 0;
     border: 2px solid #555;
-    list-style: none;
-    margin: 0;
-    padding: 0;
   }
-
   .theme-menu.show {
     display: block;
   }
-
   .theme-menu button {
     display: block;
     width: 100%;
@@ -130,100 +84,23 @@
     color: #fff;
     cursor: pointer;
     border-bottom: 1px solid #555;
-    border-right: none !important;
   }
-
   .theme-menu button:last-child {
     border-bottom: none;
   }
-
   .theme-menu button:hover {
     background: #444;
   }
 
-  /* Mobile styles */
-  @media (max-width: 768px) {
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-    }
-
-    body {
-      padding-top: 52px;
-    }
-
-    .hamburger {
-      display: block;
-      width: 100%;
-    }
-
-    .nav-menu {
-      position: fixed;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: calc(100vh - 52px);
-      background: #333;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-      transition: top 0.3s ease;
-      z-index: 999;
-      padding-top: 52px;
-      overflow-y: auto;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    .nav-menu.active {
-      top: 0;
-    }
-
-    .nav-menu li {
-      border-bottom: 1px solid #555;
-    }
-
-    .nav-menu a, .nav-menu button {
-      border-right: none;
-      padding: 20px;
-      height: auto;
-      text-align: left;
-      justify-content: flex-start;
-    }
-
-    .theme-menu {
-      position: static;
-      display: block;
-      background: #444;
-      border: none;
-      margin-left: 20px;
-    }
-
-    .theme-menu button {
-      background: #444;
-      padding-left: 40px;
-    }
-  }
-
-  /* Theme-specific navigation styles */
   body.light-mode nav {
     background: #a37c40;
     border-bottom: 2px solid #5c4020;
   }
-  body.light-mode .nav-menu a, body.light-mode .nav-menu button, body.light-mode .hamburger {
+  body.light-mode nav a, body.light-mode nav button {
     color: #2b1d0e;
     border-right: 1px solid #5c4020;
   }
-  body.light-mode .hamburger {
-    background: #a37c40;
-    border-color: #5c4020;
-  }
-  body.light-mode .hamburger:hover {
-    background: #d9b77b;
-  }
-  body.light-mode .nav-menu a:hover, body.light-mode .nav-menu button:hover {
+  body.light-mode nav a:hover, body.light-mode nav button:hover {
     background: #d9b77b;
   }
   body.light-mode .theme-menu {
@@ -239,37 +116,15 @@
     background: #d9b77b;
   }
 
-  @media (max-width: 768px) {
-    body.light-mode .nav-menu {
-      background: #a37c40;
-    }
-    body.light-mode .nav-menu li {
-      border-bottom: 1px solid #5c4020;
-    }
-    body.light-mode .theme-menu {
-      background: #8b6914;
-    }
-    body.light-mode .theme-menu button {
-      background: #8b6914;
-    }
-  }
-
   body.camo-mode nav {
     background: #3f523f;
     border-bottom: 2px solid #1e2b1e;
   }
-  body.camo-mode .nav-menu a, body.camo-mode .nav-menu button, body.camo-mode .hamburger {
+  body.camo-mode nav a, body.camo-mode nav button {
     color: #e2f0e2;
     border-right: 1px solid #1e2b1e;
   }
-  body.camo-mode .hamburger {
-    background: #3f523f;
-    border-color: #1e2b1e;
-  }
-  body.camo-mode .hamburger:hover {
-    background: #4d664d;
-  }
-  body.camo-mode .nav-menu a:hover, body.camo-mode .nav-menu button:hover {
+  body.camo-mode nav a:hover, body.camo-mode nav button:hover {
     background: #4d664d;
   }
   body.camo-mode .theme-menu {
@@ -285,32 +140,6 @@
     background: #4d664d;
   }
 
-  @media (max-width: 768px) {
-    body.camo-mode .nav-menu {
-      background: #3f523f;
-    }
-    body.camo-mode .nav-menu li {
-      border-bottom: 1px solid #1e2b1e;
-    }
-    body.camo-mode .theme-menu {
-      background: #2d3a2d;
-    }
-    body.camo-mode .theme-menu button {
-      background: #2d3a2d;
-    }
-  }
-
-  body.pink-mode nav {
-    background: #ff69b4;
-    border-bottom: 2px solid #ff1493;
-  }
-  body.pink-mode .nav-menu a, body.pink-mode .nav-menu button, body.pink-mode .hamburger {
-    color: #4a0e4e;
-    border-right: 1px solid #ff1493;
-  }
-  body.pink-mode .nav-menu a:hover, body.pink-mode .nav-menu button:hover {
-    background: #ffb6c1;
-  }
   body.pink-mode .theme-menu {
     background: #ff69b4;
     border-color: #ff1493;
@@ -324,30 +153,16 @@
     background: #ffb6c1;
   }
 
-   body.pink-mode .hamburger {
+  body.pink-mode nav {
     background: #ff69b4;
-    border-color: #ff1493;
+    border-bottom: 2px solid #ff1493;
   }
-  body.pink-mode .hamburger:hover {
+  body.pink-mode nav a, body.pink-mode nav button {
+    color: #4a0e4e;
+    border-right: 1px solid #ff1493;
+  }
+  body.pink-mode nav a:hover, body.pink-mode nav button:hover {
     background: #ffb6c1;
-  }
-  body.pink-mode .nav-menu a:hover, body.pink-mode .nav-menu button:hover {
-    background: #ffb6c1;
-  }
-
-  @media (max-width: 768px) {
-    body.pink-mode .nav-menu {
-      background: #ff69b4;
-    }
-    body.pink-mode .nav-menu li {
-      border-bottom: 1px solid #ff1493;
-    }
-    body.pink-mode .theme-menu {
-      background: #ff1493;
-    }
-    body.pink-mode .theme-menu button {
-      background: #ff1493;
-    }
   }
 
   .layout {
@@ -552,12 +367,10 @@
     border: 2px solid #444;
     padding: 15px;
     margin: 15px 0;
-    overflow-x: auto;
   }
   .leaderboard table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 500px;
   }
   .leaderboard th, .leaderboard td {
     padding: 8px 12px;
@@ -670,14 +483,36 @@
     .content {
       grid-column: span 1;
     }
-    .screenshot-gallery {
-      grid-template-columns: 1fr;
+    
+    /* Fix mobile navigation */
+    nav {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0;
     }
-    .stats-grid {
-      grid-template-columns: 1fr;
+    
+    nav a, nav button {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 10px 15px;
+      font-size: 0.9rem;
     }
-    .members-grid {
-      grid-template-columns: 1fr;
+    
+    .theme-dropdown {
+      flex-shrink: 0;
+    }
+    
+    .theme-menu {
+      right: 0;
+      left: auto;
+      min-width: 140px;
+    }
+    
+    /* Ensure theme menu doesn't break layout */
+    .theme-dropdown button {
+      padding: 10px 12px;
     }
   }
 </style>
