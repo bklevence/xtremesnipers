@@ -484,35 +484,22 @@
       grid-column: span 1;
     }
     
-    /* Fix mobile navigation */
     nav {
-      flex-direction: row;
-      flex-wrap: nowrap;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    nav::-webkit-scrollbar {
+      display: none;
     }
     
     nav a, nav button {
-      white-space: nowrap;
       flex-shrink: 0;
-      padding: 10px 15px;
-      font-size: 0.9rem;
-    }
-    
-    .theme-dropdown {
-      flex-shrink: 0;
-    }
-    
-    .theme-menu {
-      right: 0;
-      left: auto;
-      min-width: 140px;
-    }
-    
-    /* Ensure theme menu doesn't break layout */
-    .theme-dropdown button {
       padding: 10px 12px;
+      font-size: 0.85rem;
+      white-space: nowrap;
     }
   }
 </style>
@@ -886,26 +873,15 @@
 
 <script>
   // Navigation switching
-  const navLinks = document.querySelectorAll('.nav-menu a, .box a');
+  const navLinks = document.querySelectorAll('nav a, .box a');
   const sections = document.querySelectorAll('.content > div');
   const layoutArea = document.querySelector('.layout');
-  const hamburger = document.querySelector('.hamburger');
-  const navMenu = document.querySelector('.nav-menu');
   
-  // Mobile menu toggle
-  hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-  });
-
-  // Close mobile menu when clicking on a nav link
   navLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
       const target = link.getAttribute('data-target');
       if (!target) return;
-      
-      // Close mobile menu
-      navMenu.classList.remove('active');
       
       // Hide layout area for all pages except home
       if (target === 'home') {
@@ -920,13 +896,6 @@
     });
   });
 
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-      navMenu.classList.remove('active');
-    }
-  });
-
   // Apply theme helper
   function applyTheme(theme) {
     document.body.classList.remove('light-mode', 'camo-mode', 'pink-mode');
@@ -937,7 +906,7 @@
     } else if (theme === 'pink') {
       document.body.classList.add('pink-mode');
     }
-
+    // Note: localStorage is not supported in Claude.ai artifacts
   }
 
   // Theme toggle button
@@ -950,10 +919,8 @@
   });
 
   // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!themeMenu.contains(e.target) && !themeDropdownBtn.contains(e.target)) {
-      themeMenu.classList.remove('show');
-    }
+  document.addEventListener('click', () => {
+    themeMenu.classList.remove('show');
   });
 
   // Theme selection
@@ -963,8 +930,6 @@
       const theme = btn.getAttribute('data-theme');
       applyTheme(theme);
       themeMenu.classList.remove('show');
-      // Close mobile menu if open
-      navMenu.classList.remove('active');
     });
   });
 
@@ -974,6 +939,7 @@
     applyTheme('pink');
   });
 </script>
+
 
 </body>
 </html>
