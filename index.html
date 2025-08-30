@@ -53,6 +53,9 @@
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   nav a:last-child, nav button:last-child, .theme-dropdown { border-right: none; }
   nav a:hover, nav button:hover { background: #444; }
@@ -101,35 +104,9 @@
     position: relative;
     display: inline-block;
   }
-  .theme-menu {
-    display: none;
-    position: absolute;
-    background: #333;
-    min-width: 160px;
-    z-index: 1000;
-    top: 100%;
-    right: 0;
-    border: 2px solid #555;
-  }
-  .theme-menu.show {
-    display: block;
-  }
-  .theme-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    text-align: left;
-    border: none;
-    background: #333;
-    color: #fff;
-    cursor: pointer;
-    border-bottom: 1px solid #555;
-  }
-  .theme-menu button:last-child {
-    border-bottom: none;
-  }
-  .theme-menu button:hover {
-    background: #444;
+  #themeToggle {
+    font-size: 1.2rem;
+    padding: 8px 15px;
   }
 
   body.light-mode nav {
@@ -143,17 +120,8 @@
   body.light-mode nav a:hover, body.light-mode nav button:hover {
     background: #d9b77b;
   }
-  body.light-mode .theme-menu {
-    background: #a37c40;
-    border-color: #5c4020;
-  }
-  body.light-mode .theme-menu button {
-    background: #a37c40;
+  body.light-mode .theme-dropdown button {
     color: #2b1d0e;
-    border-bottom: 1px solid #5c4020;
-  }
-  body.light-mode .theme-menu button:hover {
-    background: #d9b77b;
   }
 
   body.camo-mode nav {
@@ -167,30 +135,8 @@
   body.camo-mode nav a:hover, body.camo-mode nav button:hover {
     background: #4d664d;
   }
-  body.camo-mode .theme-menu {
-    background: #3f523f;
-    border-color: #1e2b1e;
-  }
-  body.camo-mode .theme-menu button {
-    background: #3f523f;
+  body.camo-mode .theme-dropdown button {
     color: #e2f0e2;
-    border-bottom: 1px solid #1e2b1e;
-  }
-  body.camo-mode .theme-menu button:hover {
-    background: #4d664d;
-  }
-
-  body.pink-mode .theme-menu {
-    background: #ff69b4;
-    border-color: #ff1493;
-  }
-  body.pink-mode .theme-menu button {
-    background: #ff69b4;
-    color: #4a0e4e;
-    border-bottom: 1px solid #ff1493;
-  }
-  body.pink-mode .theme-menu button:hover {
-    background: #ffb6c1;
   }
 
   body.pink-mode nav {
@@ -203,6 +149,9 @@
   }
   body.pink-mode nav a:hover, body.pink-mode nav button:hover {
     background: #ffb6c1;
+  }
+  body.pink-mode .theme-dropdown button {
+    color: #4a0e4e;
   }
 
   .layout {
@@ -557,13 +506,7 @@
     <li><a href="#" data-target="stats">Clan Stats</a></li>
     <li><a href="#" data-target="games">Games List</a></li>
     <li class="theme-dropdown">
-      <button id="themeDropdownBtn">🎨 Themes ▼</button>
-      <ul class="theme-menu" id="themeMenu">
-        <li><button data-theme="dark">🌙 Night Mode</button></li>
-        <li><button data-theme="light">🌵 Desert Mode</button></li>
-        <li><button data-theme="camo">🎖️ Camo Mode</button></li>
-        <!-- <li><button data-theme="pink">🦄 Pink Unicorns</button></li> -->
-      </ul>
+      <button id="themeToggle">🎨</button>
     </li>
   </ul>
 </nav>
@@ -822,9 +765,6 @@
       <h4>Battlefield 2 - Kill/Death Ratio</h4>
       <table>
         <thead>
-          <tr><th>Rank</th><th>Player</th><th>K/D</th><th>Total Kills</th><th>Accuracy</th></tr>
-        </thead>
-        <tbody>
           <tr><td class="rank-1">#1</td><td>stav044</td><td>0.78</td><td>7</td><td>37.68%</td></tr>
           <tr><td class="rank-2">#2</td><td>quicksilvergunk</td><td>0.30</td><td>23</td><td>11.78%</td></tr>
           <tr><td class="rank-3">#3</td><td>n/a</td><td>n/a</td><td>23</td><td>n/a</td></tr>
@@ -937,6 +877,9 @@
   });
 
   // Apply theme helper
+  let currentTheme = 0;
+  const themes = ['dark', 'light', 'camo', 'pink'];
+  
   function applyTheme(theme) {
     document.body.classList.remove('light-mode', 'camo-mode', 'pink-mode');
     if (theme === 'light') {
@@ -949,28 +892,13 @@
     // Note: localStorage is not supported in Claude.ai artifacts
   }
 
-  // Theme toggle button
-  const themeDropdownBtn = document.getElementById('themeDropdownBtn');
-  const themeMenu = document.getElementById('themeMenu');
+  // Theme toggle button - cycles through themes
+  const themeToggle = document.getElementById('themeToggle');
   
-  themeDropdownBtn.addEventListener('click', (e) => {
+  themeToggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    themeMenu.classList.toggle('show');
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', () => {
-    themeMenu.classList.remove('show');
-  });
-
-  // Theme selection
-  document.querySelectorAll('.theme-menu button').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const theme = btn.getAttribute('data-theme');
-      applyTheme(theme);
-      themeMenu.classList.remove('show');
-    });
+    currentTheme = (currentTheme + 1) % themes.length;
+    applyTheme(themes[currentTheme]);
   });
 
   // Footer click → pink mode
@@ -999,4 +927,7 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
 
 
 </body>
-</html>
+</html><th>Rank</th><th>Player</th><th>K/D</th><th>Total Kills</th><th>Accuracy</th></tr>
+        </thead>
+        <tbody>
+          <tr>
